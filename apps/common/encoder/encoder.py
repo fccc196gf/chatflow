@@ -1,0 +1,31 @@
+# coding=utf-8
+
+import datetime
+import decimal
+import json
+import uuid
+
+from django.core.files.uploadedfile import InMemoryUploadedFile, TemporaryUploadedFile
+
+
+class SystemEncoder(json.JSONEncoder):
+    def encode(self, obj):
+        # 先序列化为字符串
+        json_str = super().encode(obj)
+        # 移除所有空字符
+        json_str = json_str.replace("\\u0000", "")
+        return json_str
+
+    def default(self, obj):
+        if isinstance(obj, uuid.UUID):
+            return str(obj)
+        if isinstance(obj, datetime.datetime):
+            return obj.strftime("%Y-%m-%d %H:%M:%S")
+        if isinstance(obj, decimal.Decimal):
+            return float(obj)
+        if isinstance(obj, InMemoryUploadedFile):
+            return {"name": obj.name, "size": obj.size}
+        if isinstance(obj, TemporaryUploadedFile):
+            return {"name": obj.name, "size": obj.size}
+        else:
+            return json.JSONEncoder.default(self, obj)

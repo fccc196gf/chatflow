@@ -1,0 +1,18 @@
+# coding=utf-8
+
+from typing import Dict
+
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+
+from models_provider.base_model_provider import CHATFLOWBaseModel
+
+
+class GeminiEmbeddingModel(CHATFLOWBaseModel, GoogleGenerativeAIEmbeddings):
+    @staticmethod
+    def new_instance(
+        model_type, model_name, model_credential: Dict[str, object], **model_kwargs
+    ):
+        return GeminiEmbeddingModel(
+            google_api_key=model_credential.get("api_key"),
+            model=model_name,
+        )

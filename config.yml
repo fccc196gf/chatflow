@@ -1,0 +1,85 @@
+# /opt/chatflow/conf/config.yml
+# 注意：所有键名无 CHATFLOW_ 前缀，和代码中 Config 类的 defaults 键名完全对应
+# Note: All keys have no CHATFLOW_ prefix, corresponding exactly to the defaults keys in the Config class in the code
+# 缩进用 2 个空格，冒号后必须加空格，注释单独一行
+# Indent with 2 spaces, a space must be added after the colon, comments on a separate line
+
+DEBUG: false
+
+# ===================== 数据库核心配置（解决 root 报错的关键）=====================
+# ===================== Database Core Configuration (Key to solving root errors) =====================
+# 数据库名（需提前在 PGSQL 中创建）
+# Database Name (Must be created in PGSQL in advance)
+DB_NAME: langflow_demo_db
+# PGSQL 主机（本地填 127.0.0.1 或 localhost）
+# PGSQL Host (Fill in 127.0.0.1 or localhost for local)
+DB_HOST: 127.0.0.1
+# PGSQL 默认端口（固定 5432）
+# PGSQL Default Port (Fixed 5432)
+DB_PORT: 15432
+# 替换为你在 PGSQL 中创建的用户（绝对不能是 root！）
+# Replace with the user you created in PGSQL (Must not be root!)
+DB_USER: langflow_user
+# 该用户的密码（和你创建用户时设置的一致）
+# Password for this user (Consistent with what you set when creating the user)
+DB_PASSWORD: p8ksXZihmif8dHhY
+# PGSQL 引擎（代码默认值，无需修改）
+# PGSQL Engine (Code default value, no need to modify)
+DB_ENGINE: dj_db_conn_pool.backends.postgresql
+# 数据库连接池配置（默认值，无需修改）
+# Database Connection Pool Configuration (Default value, no need to modify)
+DB_MAX_OVERFLOW: 80
+
+# ===================== Redis 配置 =====================
+# ===================== Redis Configuration =====================
+# Redis 主机
+# Redis Host
+REDIS_HOST: 127.0.0.1
+# Redis 端口
+# Redis Port
+REDIS_PORT: 6379
+# Redis 密码（无密码则留空 ""）
+# Redis Password (Leave empty "" if no password)
+REDIS_PASSWORD: ""
+# Redis 数据库编号（0-15）
+# Redis Database Number (0-15)
+REDIS_DB: 0
+# Redis 最大连接数
+# Redis Max Connections
+REDIS_MAX_CONNECTIONS: 100
+
+# ===================== 其他默认配置（可选修改）=====================
+# ===================== Other Default Configurations (Optional Modification) =====================
+# 本地模型服务地址（默认即可）
+# Local Model Service Address (Default is fine)
+LOCAL_MODEL_HOST: 127.0.0.1
+LOCAL_MODEL_PORT: 11636
+LOCAL_MODEL_PROTOCOL: http
+LOCAL_MODEL_HOST_WORKER: 1
+# 语言（默认中文）
+# Language (Default Chinese)
+LANGUAGE_CODE: zh-CN
+# 调试模式（生产环境设为 false）
+# Debug Mode (Set to false for production environment)
+# DEBUG: false
+# 时区（默认上海）
+# Time Zone (Default Shanghai)
+TIME_ZONE: Asia/Shanghai
+# 日志级别
+# Log Level
+LOG_LEVEL: DEBUG
+# 管理员路径
+# Admin Path
+ADMIN_PATH: /admin
+# 聊天路径
+# Chat Path
+CHAT_PATH: /chat
+# 会话超时时间（秒）
+# Session Timeout (Seconds)
+SESSION_TIMEOUT: 28800
+# 服务监听端口
+# Service Listening Port
+HTTP_LISTEN_PORT: 8080
+
+EMBEDDING_MODEL_PATH: /opt/chatflow-app/model/embedding
+EMBEDDING_MODEL_NAME: shibing624/text2vec-base-chinese

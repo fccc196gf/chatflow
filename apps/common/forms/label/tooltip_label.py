@@ -1,0 +1,10 @@
+# coding=utf-8
+
+from common.forms.label.base_label import BaseLabel
+
+
+class TooltipLabel(BaseLabel):
+    def __init__(self, label, tooltip):
+        super().__init__(
+            "TooltipLabel", label, attrs={"tooltip": tooltip}, props_info={}
+        )

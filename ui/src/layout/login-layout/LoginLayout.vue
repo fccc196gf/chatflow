@@ -1,0 +1,69 @@
+<template>
+  <div class="login-warp flex-center">
+    <div class="login-container w-full h-full flex-center relative">
+      <el-dropdown trigger="click" type="primary" class="lang" v-if="lang">
+        <template #dropdown>
+          <el-dropdown-menu class="w-180">
+            <el-dropdown-item
+              v-for="(lang, index) in langList"
+              :key="index"
+              :value="lang.value"
+              @click="changeLang(lang.value)"
+              class="flex-between"
+            >
+              <span :class="lang.value === user.getLanguage() ? 'primary' : ''">{{
+                lang.label
+              }}</span>
+
+              <el-icon
+                :class="lang.value === user.getLanguage() ? 'primary' : ''"
+                v-if="lang.value === user.getLanguage()"
+              >
+                <Check />
+              </el-icon>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+        <el-button>
+          {{ currentLanguage }}<el-icon class="el-icon--right"><arrow-down /></el-icon>
+        </el-button>
+      </el-dropdown>
+      <slot></slot>
+    </div>
+  </div>
+</template>
+<script setup lang="ts">
+import { computed } from 'vue'
+import useStore from '@/stores'
+import { useLocalStorage } from '@vueuse/core'
+import { langList, localeConfigKey, getBrowserLang } from '@/locales/index'
+defineProps({
+  lang: {
+    type: Boolean,
+    default: true,
+  },
+})
+const { user } = useStore()
+
+const changeLang = (lang: string) => {
+  useLocalStorage(localeConfigKey, getBrowserLang()).value = lang
+  window.location.reload()
+}
+
+const currentLanguage = computed(() => {
+  return langList.value?.filter((v: any) => v.value === user.getLanguage())?.[0]?.label
+})
+</script>
+<style lang="scss" scoped>
+.login-warp {
+  height: 100vh;
+  .login-container {
+    position: relative;
+    .lang {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+    }
+  }
+}
+</style>

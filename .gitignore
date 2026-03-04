@@ -1,0 +1,6 @@
+.venv
+.idea
+!/apps/static/admin/
+!/apps/static/chat/
+!/apps/static/dist/
+!/apps/static/public/
