@@ -163,9 +163,9 @@ chmod +x en_start_pgvector.sh
 
     ```nginx
     server {
-        listen       80;
+        listen       8080;
         server_name  localhost;
-        root   /www/python-03-02/chatflow/ui/dist;
+        root   /***/chatflow/ui/dist;
 
         # ==========================
         # 1. 根路径策略
