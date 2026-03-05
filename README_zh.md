@@ -152,10 +152,60 @@ chmod +x en_start_pgvector.sh
     如果您需要为生产环境构建项目：
 
     ```bash
-    npm run build
+    npx concurrently "npm run build" "npm run build-chat"
     ```
 
     构建产物将生成在 `dist` 目录中。
+
+    **Nginx 配置**
+
+    如果您使用 Nginx 部署前端，可以使用以下配置：
+
+    ```nginx
+    server {
+        listen       80;
+        server_name  localhost;
+        root   /www/python-03-02/chatflow/ui/dist;
+
+        # ==========================
+        # 1. 根路径策略
+        # ==========================
+        # 访问 / 时，直接重定向到 /admin
+        location = / {
+            return 302 /admin;
+        }
+
+        # 全局兜底策略
+        location / {
+            try_files $uri $uri/ /admin/index.html;
+        }
+
+        # ==========================
+        # 2. API 代理 (必须配置)
+        # ==========================
+        # 拦截所有 /admin/api/ 和 /chat/api/ 请求，转发给后端
+        location ~ ^/(admin|chat)/api/ {
+            proxy_pass http://127.0.0.1:8080; # 你的 Django 后端地址
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        }
+
+        # ==========================
+        # 3. 前端应用路由 (SPA)
+        # ==========================
+
+        # Admin
+        location /admin {
+            try_files $uri $uri/ /admin/index.html;
+        }
+
+        # Chat
+        location /chat {
+            try_files $uri $uri/ /chat/index.html;
+        }
+    }
+    ```
 
 ## 致谢 (Acknowledgement)
 

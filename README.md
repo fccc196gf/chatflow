@@ -152,10 +152,60 @@ Before running the application, you need to set up the configuration file and mo
     If you need to build the project for production:
 
     ```bash
-    npm run build
+    npx concurrently "npm run build" "npm run build-chat"
     ```
     
     The build artifacts will be generated in the `dist` directory.
+
+    **Nginx Configuration**
+
+    If you deploy the frontend using Nginx, you can use the following configuration:
+
+    ```nginx
+    server {
+        listen       80;
+        server_name  localhost;
+        root   /www/python-03-02/chatflow/ui/dist;
+
+        # ==========================
+        # 1. Root Path Strategy
+        # ==========================
+        # Redirect root path to admin
+        location = / {
+            return 302 /admin;
+        }
+
+        # Global fallback strategy
+        location / {
+            try_files $uri $uri/ /admin/index.html;
+        }
+
+        # ==========================
+        # 2. API Proxy (Mandatory)
+        # ==========================
+        # Intercept all /admin/api/ and /chat/api/ requests and forward them to the backend
+        location ~ ^/(admin|chat)/api/ {
+            proxy_pass http://127.0.0.1:8080; # Your Django backend address
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        }
+
+        # ==========================
+        # 3. Frontend Application Routing (SPA)
+        # ==========================
+
+        # Admin
+        location /admin {
+            try_files $uri $uri/ /admin/index.html;
+        }
+
+        # Chat
+        location /chat {
+            try_files $uri $uri/ /chat/index.html;
+        }
+    }
+    ```
 
 ## Acknowledgement
 
