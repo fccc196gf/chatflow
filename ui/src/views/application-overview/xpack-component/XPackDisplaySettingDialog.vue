@@ -161,8 +161,6 @@
           />
           <img
             v-else
-            //err path
-            // src="./logo/ChatFlow.gif
             src="@/assets/logo/ChatFlow.gif"
             height="50px"
             style="width: 40px; height: 40px; display: block"
