@@ -163,9 +163,9 @@ Before running the application, you need to set up the configuration file and mo
 
     ```nginx
     server {
-        listen       80;
+        listen       8080;
         server_name  localhost;
-        root   /www/python-03-02/chatflow/ui/dist;
+        root   /***/chatflow/ui/dist;
 
         # ==========================
         # 1. Root Path Strategy
